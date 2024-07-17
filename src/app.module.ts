@@ -14,6 +14,7 @@ import { CommonModule } from './common/common.module';
     }),
 
     MongooseModule.forRoot('mongodb://localhost:27017/nest-pokemon'),
+    // mongodb+srv://root:J5RgAx0jmYwKDoTN@pokedex.p6gbggl.mongodb.net/
 
     PokemonModule,
 
