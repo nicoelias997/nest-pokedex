@@ -19,6 +19,7 @@ npm i -g @nestjs/cli
 docker-compose up -d
 ```
 
+5. 
 
 ## Stack usado
 * MongoDB
