@@ -5,6 +5,7 @@ import { PokemonService } from 'src/pokemon/pokemon.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pokemon } from 'src/pokemon/entities/pokemon.entity';
 import { Model } from 'mongoose';
+import { AxiosAdapter } from 'src/common/interfaces/adapters/axios.adapter';
 
 
 @Injectable()
@@ -40,9 +41,11 @@ export class SeedService {
   // TODO: Asi lo hizo el profe
   constructor(
     @InjectModel( Pokemon.name)
-    private readonly pokemonModel: Model<Pokemon>
+    private readonly pokemonModel: Model<Pokemon>,
+
+    private readonly http: AxiosAdapter
+
   ) {}
-  private readonly axios: AxiosInstance = axios;
 
   // TODO: Demora mucho, ya que va promesa por promesa: 778ms
   
@@ -95,7 +98,7 @@ export class SeedService {
 
   await this.pokemonModel.deleteMany({})
 
-  const { data } = await this.axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=800')
+  const data = await this.http.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=800')
 
   const pokemonToInsert: { name: string, no: number }[] = [];
   
@@ -107,9 +110,9 @@ export class SeedService {
     // Llama al servicio de pokemon para crear el pokemon
       // const pokemon = this.pokemonModel.create({name, no});
       pokemonToInsert.push({ name, no });
-  })
-  await this.pokemonModel.insertMany( pokemonToInsert )
+    })
+    await this.pokemonModel.insertMany( pokemonToInsert )
 
-  return 'Seed executed succesfully';
-}
+    return 'Seed executed succesfully';
+  }
 }
