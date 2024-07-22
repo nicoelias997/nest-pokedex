@@ -15,15 +15,20 @@ import { JoiValidationSchema } from './config/joi.validation';
 
     ConfigModule.forRoot({
       load: [EnvConfiguration],
-      validationSchema: [JoiValidationSchema]
+      validationSchema: JoiValidationSchema
     }),
     
     ServeStaticModule.forRoot({
       rootPath: join(__dirname,'..','public'), 
     }),
 
-    MongooseModule.forRoot(process.env.MONGODB),
+    MongooseModule.forRoot(process.env.MONGODB, 
+      {
+        dbName: 'pokemonsdb'
+      }
+    ),
     // mongodb+srv://root:J5RgAx0jmYwKDoTN@pokedex.p6gbggl.mongodb.net/
+    // mongodb://mongo:bHcVbAAYRcFhwhIBSnPEEZxpxvPNUDpd@viaduct.proxy.rlwy.net:42174
 
     PokemonModule,
 
